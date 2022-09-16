@@ -62,8 +62,7 @@ fn parse_url(s: &str) -> Result<String, anyhow::Error> {
 
 async fn get(client: Client, args: &Get) -> Result<(), anyhow::Error> {
     let resp = client.get(&args.url).send().await?;
-    println!("{:?}", resp.text().await?);
-    Ok(())
+    Ok(print_resp(resp).await?)
 }
 
 async fn post(client: Client, args: &Post) -> Result<(), anyhow::Error> {
@@ -72,8 +71,7 @@ async fn post(client: Client, args: &Post) -> Result<(), anyhow::Error> {
         body.insert(&pair.k, &pair.v);
     }
     let resp = client.post(&args.url).json(&body).send().await?;
-    println!("{:?}", resp.text().await?);
-    Ok(())
+    Ok(print_resp(resp).await?)
 }
 
 fn print_status(resp: &Response) {
